@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUFUFU Info</title>
+    <link rel="icon" href="IMG/Avatar_Ju_Fufu.webp" type="image/png">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #dddddd;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar personalizada */
+        .navbar-jufufu {
+            background-color: rgba(17, 17, 17, 0.95);
+            border-bottom: 2px solid #ff8c00;
+            backdrop-filter: blur(10px);
+            z-index: 1050;
+        }
+
+        .navbar-jufufu .nav-link {
+            color: #fff !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .navbar-jufufu .nav-link:hover {
+            color: #ff8c00 !important;
+            background: rgba(255, 140, 0, 0.1);
+        }
+
+        /* Encabezado con Flexbox  */
+        .header-simple {
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+            background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 15px;
+            background-color: #222;
+            padding: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.2);
+        }
+
+        .header-text {
+            text-align: left;
+        }
+
+        .header-simple h1 {
+            color: #ff8c00;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 0;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+
+        .header-simple p {
+            margin: 0;
+            font-size: 1rem;
+            color: #888;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        /* Ajuste del Carrusel */
+        .carousel-item {
+            height: 500px;
+            background-color: #000;
+        }
+
+        .carousel-item img { 
+            height: 100%; 
+            width: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .carousel-caption {
+            bottom: 20%;
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 140, 0, 0.3);
+        }
+
+        /* Botón Volver Arriba*/
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: none;
+            background-color: #ff8c00;
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+            cursor: pointer;
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        #btn-back-to-top:hover {
+            transform: scale(1.1);
+            background-color: #fff;
+        }
+
+        /* Resto de estilos del perfil de agente, equipo y combate... */
+        .agent-profile-section { padding: 60px 0; background-color: #151515; border-bottom: 1px solid #333; }
+        .agent-card { display: flex; align-items: center; gap: 40px; background: rgba(40, 40, 40, 0.5); padding: 30px; border-radius: 20px; border-left: 5px solid #ff8c00; }
+        .agent-image-container { flex: 1; max-width: 350px; }
+        .agent-image-container img { width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #444; }
+        .agent-info { flex: 2; }
+        .agent-info h2 { color: #ff8c00; font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; }
+        .agent-info p { line-height: 1.6; color: #ccc; font-size: 1.1rem; }
+
+        .team-section { padding: 60px 0; background-color: #1a1a1a; }
+        .team-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #0a0c10; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-top: 20px; }
+        .team-header { background: #0d1117; border-bottom: 2px solid #21262d; padding: 15px; color: #fff; font-weight: bold; text-align: center; }
+        .team-cell { padding: 20px; border: 1px solid #21262d; text-align: center; vertical-align: middle; }
+        .char-img { width: 80px; height: 80px; border-radius: 12px; margin-bottom: 10px; border: 2px solid #ff8c00; background: #1a1a1a; }
+        .char-name { display: block; font-weight: bold; color: #fff; margin-bottom: 5px; }
+        .char-role { display: block; color: #888; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .team-footer-info { background: #0a0c10; padding: 20px; border: 1px solid #21262d; border-top: none; color: #c9d1d9; font-size: 1.1rem; line-height: 1.6; }
+
+        .marketing-section { padding: 5rem 0; }
+        .marketing-item { text-align: center; margin-bottom: 2rem; }
+        .circle-img-container { width: 140px; height: 140px; background-color: #333; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden; border: 2px solid #444; transition: transform 0.3s ease; }
+        .circle-img-container:hover { transform: scale(1.05); border-color: #ff8c00; }
+        .circle-img-container img { width: 70%; height: auto; object-fit: contain; }
+
+        .combat-featurette-divider { margin: 5rem 0; border: 0; border-top: 1px solid #333; }
+        .combat-heading { font-weight: 300; line-height: 1; letter-spacing: -.05rem; color: #fff; margin-bottom: 1.5rem; font-size: 3rem; }
+        .combat-heading span { color: #ff8c00; }
+        .combat-text { font-size: 1.25rem; color: #aaa; line-height: 1.6; }
+        .combat-img-fluid { width: 100%; height: auto; border-radius: 10px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+
+        @media (max-width: 768px) {
+            .agent-card { flex-direction: column; text-align: center; }
+            .header-container { flex-direction: column; gap: 10px; }
+            .header-text { text-align: center; }
+            .team-table { display: block; overflow-x: auto; }
+            .combat-heading { font-size: 2.5rem; text-align: center; }
+            .combat-text { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top navbar-jufufu">
+        <div class="container">
+            <a class="navbar-brand d-lg-none fw-bold text-warning" href="#">JUFUFU</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-link">
+                        <a class="nav-link" href="#equipo-recomendado">EQUIPO RECOMENDADO</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#seccion-combate">COMBATE JUFUFU</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header-simple">
+        <div class="header-container">
+            <img src="IMG/logo.1e072ee.png" alt="Logo" class="header-logo">
+            <div class="header-text">
+                <h1>JUFUFU INFO</h1>
+                <p>Expediente de Agente Autorizado - Nya</p>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div id="jufufuCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#jufufuCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#jufufuCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="IMG/image (1).png" class="d-block w-100" alt="JUFUFU 1">
+                    <div class="carousel-caption">
+                        <h2 class="fw-bold">"hehe..."</h2>
+                        <p>¡No soy un gato naranja! Nya.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="IMG/image.png" class="d-block w-100" alt="JUFUFU 2">
+                    <div class="carousel-caption">
+                        <h2 class="fw-bold">“fufu~”</h2>
+                        <p>Esta tigre te hará papilla nya.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#jufufuCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#jufufuCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+
+        <div class="container marketing-section">
+            <div class="row">
+                <div class="col-lg-4 marketing-item">
+                    <div class="circle-img-container">
+                        <img src="IMG/Icon_Fire.webp" alt="Atributo">
+                    </div>
+                    <h2>Atributo</h2>
+                    <p>Dominio del elemento Fuego para calcinar a los enemigos más resistentes nya.</p>
+                </div>
+                <div class="col-lg-4 marketing-item">
+                    <div class="circle-img-container">
+                        <img src="IMG/Icon_Stun.webp" alt="Especialidad">
+                    </div>
+                    <h2>Especialidad</h2>
+                    <p>Experta en aturdir objetivos mediante ataques rápidos y precisos nya.</p>
+                </div>
+                <div class="col-lg-4 marketing-item">
+                    <div class="circle-img-container">
+                        <img src="IMG/Zzz-s-rank.webp" alt="Rango">
+                    </div>
+                    <h2>Rango</h2>
+                    <p>Agente de Rango S certificada para misiones de alta peligrosidad nya.</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="agent-profile-section">
+            <div class="container">
+                <div class="agent-card">
+                    <div class="agent-image-container">
+                        <img src="IMG/Agent_Ju_Fufu_Portrait.webp" alt="JUFUFU Perfil">
+                    </div>
+                    <div class="agent-info">
+                        <h2>¿Quién es JUFUFU?</h2>
+                        <p>JUFUFU es una agente de élite conocida por su increíble agilidad y su temperamento juguetón pero letal. Aunque muchos la confunden con un gato doméstico por su risa característica ("fufu~")...</p>
+                        <p>Su estilo de combate se basa en el aturdimiento rápido nya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="equipo-recomendado" class="container" style="padding-top: 20px;">
+            <h1 class="text-center mt-5 mb-1" style="color: #ff8c00; font-weight: 800;">EQUIPO RECOMENDADO</h1>
+            <hr class="combat-featurette-divider">
+
+
+
+         <section class="team-section">
+            <div class="container">
+                <h2 class="text-center mb-4" style="color: #ff8c00; font-weight: 800; border-left: 5px solid #ff8c00; padding-left: 15px;">JU FUFU ATTACK TEAM</h2>
+                
+                <table class="team-table">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="team-header">Ju Fufu Attack Team</th>
+                            <th class="team-header">Bangboo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="team-cell">
+                                <img src="IMG/icon_fufu.png" alt="Ju Fufu" class="char-img">
+                                <span class="char-name">Ju Fufu</span>
+                                <span class="char-role">Stun</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/icon_evelyn.png" alt="Evelyn" class="char-img">
+                                <span class="char-name">Evelyn</span>
+                                <span class="char-role">Attack</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/icon_astra.png" alt="Astra" class="char-img">
+                                <span class="char-name">Astra</span>
+                                <span class="char-role">Support</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/bangboo_snap.png" alt="Snap" class="char-img">
+                                <span class="char-name" style="color: #ff8c00;">Belion</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="team-footer-info">
+                    <p>Debido al aumento de DAÑO CRÍTICO de Ju Fufu, ella puede ser utilizada como un híbrido efectivo de Apoyo-Aturdir para unidades de Ataque. Los personajes que pasan mucho tiempo en el campo se beneficiarán más de tener a Ju Fufu en sus equipos.</p>
+                </div>
+            </div>
+        </section>
+
+         <section class="team-section">
+            <div class="container">
+                <h2 class="text-center mb-4" style="color: #ff8c00; font-weight: 800; border-left: 5px solid #ff8c00; padding-left: 15px;">JU FUFU RUPTURE TEAM</h2>
+                
+                <table class="team-table">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="team-header">Ju fufu Rupture Team</th>
+                            <th class="team-header">Bangboo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="team-cell">
+                                <img src="IMG/icon_fufu.png" alt="Ju Fufu" class="char-img">
+                                <span class="char-name">Ju Fufu</span>
+                                <span class="char-role">Stun</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/icon_yixuan.png" alt="Yixuan" class="char-img">
+                                <span class="char-name">Yixuan</span>
+                                <span class="char-role">Rupture</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/icon_lucia.png" alt="Lucia" class="char-img">
+                                <span class="char-name">Lucia</span>
+                                <span class="char-role">Support</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/bangboo_belion.png" alt="Belion" class="char-img">
+                                <span class="char-name" style="color: #ff8c00;">Belion</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="team-footer-info">
+                    <p>Ju Fufu va a ser la mejor unidad de aturdimiento de Yixuan ya que puede aumentar su DAÑO CRÍTICO</p>
+                    <p>Ella también puede ayudar a Yixuan a ganar 300 decibelios después de que este use un ataque definitivo</p>
+                </div>
+            </div>
+        </section>
+
+         <section class="team-section">
+            <div class="container">
+                <h2 class="text-center mb-4" style="color: #ff8c00; font-weight: 800; border-left: 5px solid #ff8c00; padding-left: 15px;">JU FUFU F2P TEAM</h2>
+                
+                <table class="team-table">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="team-header">Ju fufu F2P Team</th>
+                            <th class="team-header">Bangboo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="team-cell">
+                                <img src="IMG/icon_fufu.png" alt="Ju Fufu" class="char-img">
+                                <span class="char-name">Ju Fufu</span>
+                                <span class="char-role">Stun</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/icon_billy.png" alt="Billy" class="char-img">
+                                <span class="char-name">Billy</span>
+                                <span class="char-role">Attack</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/icon_nicole.png" alt="Nicole" class="char-img">
+                                <span class="char-name">Nicole</span>
+                                <span class="char-role">Support</span>
+                            </td>
+                            <td class="team-cell">
+                                <img src="IMG/bangboo_booressure.png" alt="Booressure" class="char-img">
+                                <span class="char-name" style="color: #ff8c00;">Booressure</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="team-footer-info">
+                    <p>Para este equipo gratuito, puedes usar el trío Cunning Hares pero reemplaza a Anby con Ju Fufu. Usa a Ju Fufu y Nicole para aturdir y debilitar al enemigo, respectivamente.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Combate con ID nya -->
+        <div id="seccion-combate" class="container" style="padding-top: 20px;">
+            <h1 class="text-center mt-5 mb-1" style="color: #ff8c00; font-weight: 800;">COMBATE JUFUFU</h1>
+            <hr class="combat-featurette-divider">
+
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h2 class="combat-heading">Oh sí, es así de buena. <span>Míralo tú mismo.</span></h2>
+                    <p class="combat-text">El Ataque Básico de Ju Fufu en Zenless Zone Zero es la cadena principal de golpes nya.</p>
+                </div>
+                <div class="col-md-5">
+                    <img src="IMG/Tiger_Seven_Forms_-_Flaming_Claw_Preview (1).webp" class="combat-img-fluid" alt="Ataque Básico">
+                </div>
+            </div>
+
+            <hr class="combat-featurette-divider">
+
+            <div class="row align-items-center">
+                <div class="col-md-7 order-md-2">
+                    <h2 class="combat-heading">Y por último, este. <span>Jaque mate.</span></h2>
+                    <p class="combat-text">El Ataque Especial de Ju Fufu acelera el "Daze" del enemigo nya.</p>
+                </div>
+                <div class="col-md-5 order-md-1">
+                    <img src="IMG/Tiger_Seven_Forms_-_Mountain-Descending_Tiger_Preview.webp" class="combat-img-fluid" alt="Ataque Especial">
+                </div>
+            </div>
+            
+            <hr class="combat-featurette-divider">
+        </div>
+    </main>
+
+    <button type="button" id="btn-back-to-top" title="Volver al carrusel">
+        ↑
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let mybutton = document.getElementById("btn-back-to-top");
+
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            // Se muestra cuando bajas más de 300px nya
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        mybutton.addEventListener("click", backToTop);
+
+        function backToTop() {
+            // Te lleva suavemente al carrusel nya
+            const carousel = document.getElementById('jufufuCarousel');
+            carousel.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
